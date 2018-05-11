@@ -1,6 +1,5 @@
 <?php
 
-$searchCount = 10;
 $twitterPictures = 0;
 
 try{
@@ -13,10 +12,7 @@ try{
     }
 
     // 画像取得
-    while(count($twitterPictures) < 10){
-        $twitterPictures = getTwitterInfo($searchCount);
-        $searchCount = $searchCount + 5; 
-    }
+    $twitterPictures = getTwitterInfo();
 
     // 取得した画像ファイルを保存
     if(count($twitterPictures) > 0){
@@ -34,7 +30,7 @@ try{
 }
 
 // ツイッタの画像を検索
-function getTwitterInfo($count){
+function getTwitterInfo(){
     $url = array();
     
     // 設定
@@ -46,9 +42,10 @@ function getTwitterInfo($count){
     $request_method = 'GET' ;
     
     // パラメータA (オプション)
+    // リツイートを検索から除外する
     $params_a = array(
-        "q" => "JustinBieber",
-        "count" => $count,
+        "q" => "JustinBieber -rt -abc",
+        "count" => 100,
     ) ;
 
     // キーを作成する (URLエンコードする)
@@ -144,11 +141,11 @@ function getTwitterInfo($count){
         return array();
     }
     
-    foreach($obj->statuses as $key=>$twit){
+    foreach($obj->statuses as $twit){
         if(isset($twit->entities->media)){
             $url[] = $twit->entities->media[0]->media_url;
             if(count($url) >= 10){
-               break;
+                break;
             }
         }
     }
