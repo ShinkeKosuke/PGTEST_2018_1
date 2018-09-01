@@ -1,0 +1,7 @@
+.box{
+    width:1000px;
+    height:300px;
+    padding:40px 60px;
+    background-color:pink;
+    border: 1px solid rgba(0, 0, 0, 3);
+}
